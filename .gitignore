@@ -1,6 +1,7 @@
 .idea/
 notes.md
 *.out
+.out/
 
 # Compiled class file
 *.class
