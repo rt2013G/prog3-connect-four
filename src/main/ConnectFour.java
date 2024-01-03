@@ -36,8 +36,14 @@ public class ConnectFour extends Application {
                 ConnectFourGameHandler.getInstance().getGrid().TOKEN_COMPUTER_SYMBOL, 4);
         ConnectFourGameHandler.getInstance().getGrid().insertToken(
                 ConnectFourGameHandler.getInstance().getGrid().TOKEN_PLAYER_SYMBOL, 4);
-        ConnectFourGameHandler.getInstance().makeComputerMove();
-        ConnectFourGameHandler.getInstance().getGrid().printBoard();
+        ConnectFourGameHandler.getInstance().getGrid().insertToken(
+                ConnectFourGameHandler.getInstance().getGrid().TOKEN_PLAYER_SYMBOL, 0);
+        ConnectFourGameHandler.getInstance().getGrid().insertToken(
+                ConnectFourGameHandler.getInstance().getGrid().TOKEN_COMPUTER_SYMBOL, 2);
+        ConnectFourGameHandler.getInstance().getGrid().insertToken(
+                ConnectFourGameHandler.getInstance().getGrid().TOKEN_COMPUTER_SYMBOL, 4);
+        ConnectFourGameHandler.getInstance().getGrid().insertToken(
+                ConnectFourGameHandler.getInstance().getGrid().TOKEN_PLAYER_SYMBOL, 4);
         ConnectFourGameHandler.getInstance().makeComputerMove();
         ConnectFourGameHandler.getInstance().getGrid().printBoard();
 

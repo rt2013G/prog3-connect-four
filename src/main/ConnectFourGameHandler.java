@@ -22,7 +22,7 @@ public class ConnectFourGameHandler {
     }
 
     public void makeComputerMove() {
-        int column = this.computerStrategy.bestMoveColumn(this.connectFourGrid);
+        int column = this.computerStrategy.computerMoveColumn(this.connectFourGrid);
         this.connectFourGrid.insertToken(connectFourGrid.TOKEN_COMPUTER_SYMBOL, column);
     }
     private static final ConnectFourGameHandler Instance = new ConnectFourGameHandler();

@@ -32,7 +32,7 @@ public class ConnectFourGrid {
     }
 
     public void insertToken(char tokenSymbol, int column) {
-        if(!isMoveValid(column)) {
+        if(isMoveInvalid(column)) {
             return;
         }
         for(int i = 0; i < ROWS; i++) {
@@ -48,8 +48,8 @@ public class ConnectFourGrid {
         }
     }
 
-    public boolean isMoveValid(int column) {
-        return this.gridState[0][column] == TOKEN_EMPTY_SYMBOL;
+    public boolean isMoveInvalid(int column) {
+        return this.gridState[0][column] != TOKEN_EMPTY_SYMBOL;
     }
 
     public void printBoard() {
