@@ -11,8 +11,20 @@ public class ConnectFourGrid {
         this.gridState = initGridState();
     }
 
+    public ConnectFourGrid cloneSelf() {
+        ConnectFourGrid newGrid = new ConnectFourGrid();
+        newGrid.setGridState(this.cloneGridState());
+        return newGrid;
+    }
+
     public char[][] cloneGridState() {
-        return this.gridState.clone();
+        char[][] newGridState = new char[ROWS][COLUMNS];
+        for(int i = 0; i < ROWS; i++) {
+            for(int j = 0; j < COLUMNS; j++) {
+                newGridState[i][j] = this.gridState[i][j];
+            }
+        }
+        return newGridState;
     }
 
     public void setGridState(char[][] newGrid) {
@@ -34,6 +46,10 @@ public class ConnectFourGrid {
                 this.lastPlayedMoveSymbol = tokenSymbol;
             }
         }
+    }
+
+    public boolean isMoveValid(int column) {
+        return this.gridState[0][column] == TOKEN_EMPTY_SYMBOL;
     }
 
     public void printBoard() {
@@ -59,6 +75,17 @@ public class ConnectFourGrid {
         }
     }
 
+    public int getGridEvaluation(char currentTurnSymbol) {
+        char winner = getWinnerSymbolOrEmptySymbol();
+        if(winner == TOKEN_EMPTY_SYMBOL) {
+            return 0;
+        }
+        if(winner == currentTurnSymbol) {
+            return 1;
+        }
+        return -1;
+    }
+
 
     private char[][] gridState;
     private char lastPlayedMoveSymbol = TOKEN_EMPTY_SYMBOL;
@@ -76,10 +103,6 @@ public class ConnectFourGrid {
 
     private boolean checkWinner() {
         return getWinnerSymbolOrEmptySymbol() != TOKEN_EMPTY_SYMBOL;
-    }
-
-    private boolean isMoveValid(int column) {
-        return this.gridState[0][column] == TOKEN_EMPTY_SYMBOL;
     }
 
     private boolean isGridCellEmpty(int row, int col) {

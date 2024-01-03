@@ -26,19 +26,22 @@ public class ConnectFour extends Application {
         stage.setScene(scene);
         stage.show();*/
         //ConnectFourGameHandler.getInstance().getGrid().printBoard();
-        ConnectFourGrid newGrid = new ConnectFourGrid();
-        newGrid.insertToken(newGrid.TOKEN_COMPUTER_SYMBOL, 2);
-        newGrid.insertToken(newGrid.TOKEN_COMPUTER_SYMBOL, 3);
-        newGrid.insertToken(newGrid.TOKEN_COMPUTER_SYMBOL, 4);
-        newGrid.insertToken(newGrid.TOKEN_PLAYER_SYMBOL, 3);
-        newGrid.insertToken(newGrid.TOKEN_PLAYER_SYMBOL, 4);
-        newGrid.insertToken(newGrid.TOKEN_COMPUTER_SYMBOL, 4);
-        newGrid.insertToken(newGrid.TOKEN_PLAYER_SYMBOL, 3);
-        newGrid.insertToken(newGrid.TOKEN_PLAYER_SYMBOL, 4);
-        newGrid.insertToken(newGrid.TOKEN_PLAYER_SYMBOL, 4);
-        newGrid.insertToken(newGrid.TOKEN_COMPUTER_SYMBOL, 4);
-        newGrid.printBoard();
-        newGrid.printWinner();
+        ConnectFourGameHandler.getInstance().getGrid().insertToken(
+                ConnectFourGameHandler.getInstance().getGrid().TOKEN_PLAYER_SYMBOL, 0);
+        ConnectFourGameHandler.getInstance().getGrid().insertToken(
+                ConnectFourGameHandler.getInstance().getGrid().TOKEN_COMPUTER_SYMBOL, 2);
+        ConnectFourGameHandler.getInstance().getGrid().insertToken(
+                ConnectFourGameHandler.getInstance().getGrid().TOKEN_PLAYER_SYMBOL, 0);
+        ConnectFourGameHandler.getInstance().getGrid().insertToken(
+                ConnectFourGameHandler.getInstance().getGrid().TOKEN_COMPUTER_SYMBOL, 4);
+        ConnectFourGameHandler.getInstance().getGrid().insertToken(
+                ConnectFourGameHandler.getInstance().getGrid().TOKEN_PLAYER_SYMBOL, 4);
+        ConnectFourGameHandler.getInstance().makeComputerMove();
+        ConnectFourGameHandler.getInstance().getGrid().printBoard();
+        ConnectFourGameHandler.getInstance().makeComputerMove();
+        ConnectFourGameHandler.getInstance().getGrid().printBoard();
+
+
 
     }
     public static void main(String[] args) {

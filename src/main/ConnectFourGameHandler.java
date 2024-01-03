@@ -1,6 +1,8 @@
 package src.main;
 
 import src.main.components.ConnectFourGrid;
+import src.main.computer.AttackStrategy;
+import src.main.computer.ComputerStrategy;
 
 public class ConnectFourGameHandler {
     public static ConnectFourGameHandler getInstance() {
@@ -14,8 +16,18 @@ public class ConnectFourGameHandler {
     public void setGrid(ConnectFourGrid connectFourGrid) {
         this.connectFourGrid = connectFourGrid;
     }
+
+    public void setComputerStrategy(ComputerStrategy computerStrategy) {
+        this.computerStrategy = computerStrategy;
+    }
+
+    public void makeComputerMove() {
+        int column = this.computerStrategy.bestMoveColumn(this.connectFourGrid);
+        this.connectFourGrid.insertToken(connectFourGrid.TOKEN_COMPUTER_SYMBOL, column);
+    }
     private static final ConnectFourGameHandler Instance = new ConnectFourGameHandler();
     private ConnectFourGrid connectFourGrid = new ConnectFourGrid();
+    private ComputerStrategy computerStrategy = new AttackStrategy();
     private ConnectFourGameHandler() {}
 
 }
