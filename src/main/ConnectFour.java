@@ -2,8 +2,7 @@ package src.main;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import src.main.components.GameGrid;
-import src.main.computer.DefenseStrategy;
+import src.main.components.ConnectFourGrid;
 
 /**
  * This is the entry point of the application
@@ -26,20 +25,22 @@ public class ConnectFour extends Application {
 
         stage.setScene(scene);
         stage.show();*/
-        GameGrid grid = new GameGrid(new DefenseStrategy());
-        grid.makeMove(grid.TOKEN_COMPUTER, 1);
-        grid.makeMove(grid.TOKEN_COMPUTER, 2);
-        grid.makeMove(grid.TOKEN_COMPUTER, 3);
-        grid.makeMove(grid.TOKEN_PLAYER, 1);
-        grid.makeMove(grid.TOKEN_PLAYER, 2);
-        grid.makeMove(grid.TOKEN_PLAYER, 3);
-        grid.makeMove(grid.TOKEN_PLAYER, 4);
-        grid.makeMove(grid.TOKEN_PLAYER, 4);
-        grid.printBoard();
-        grid.printWinner();
+        //ConnectFourGameHandler.getInstance().getGrid().printBoard();
+        ConnectFourGrid newGrid = new ConnectFourGrid();
+        newGrid.insertToken(newGrid.TOKEN_COMPUTER_SYMBOL, 2);
+        newGrid.insertToken(newGrid.TOKEN_COMPUTER_SYMBOL, 3);
+        newGrid.insertToken(newGrid.TOKEN_COMPUTER_SYMBOL, 4);
+        newGrid.insertToken(newGrid.TOKEN_PLAYER_SYMBOL, 3);
+        newGrid.insertToken(newGrid.TOKEN_PLAYER_SYMBOL, 4);
+        newGrid.insertToken(newGrid.TOKEN_COMPUTER_SYMBOL, 4);
+        newGrid.insertToken(newGrid.TOKEN_PLAYER_SYMBOL, 3);
+        newGrid.insertToken(newGrid.TOKEN_PLAYER_SYMBOL, 4);
+        newGrid.insertToken(newGrid.TOKEN_PLAYER_SYMBOL, 4);
+        newGrid.insertToken(newGrid.TOKEN_COMPUTER_SYMBOL, 4);
+        newGrid.printBoard();
+        newGrid.printWinner();
 
     }
-
     public static void main(String[] args) {
         launch(args);
     }
