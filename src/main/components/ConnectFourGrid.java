@@ -186,61 +186,45 @@ public class ConnectFourGrid {
 
     private char getWinnerSymbolOrEmptySymbol() {
         // horizontal
-        for (int j = 0; j < COLUMNS; j++) {
+        for (int j = 0; j < COLUMNS - 3; j++) {
             for (int i = 0; i < ROWS; i++) {
-                try {
                     if (this.gridState[i][j] == lastPlayedMoveSymbol &&
-                        this.gridState[i][j + 1] == lastPlayedMoveSymbol &&
-                        this.gridState[i][j + 2] == lastPlayedMoveSymbol &&
-                        this.gridState[i][j + 3] == lastPlayedMoveSymbol) {
+                            this.gridState[i][j + 1] == lastPlayedMoveSymbol &&
+                            this.gridState[i][j + 2] == lastPlayedMoveSymbol &&
+                            this.gridState[i][j + 3] == lastPlayedMoveSymbol) {
                         return lastPlayedMoveSymbol;
                     }
-                } catch (Exception e) {
-                    continue;
-                }
             }
         }
         // vertical
-        for (int i = 0; i < ROWS; i++) {
+        for (int i = 0; i < ROWS - 3; i++) {
             for (int j = 0; j < COLUMNS; j++) {
-                try {
                     if (this.gridState[i][j] == lastPlayedMoveSymbol &&
-                        this.gridState[i + 1][j] == lastPlayedMoveSymbol &&
-                        this.gridState[i + 2][j] == lastPlayedMoveSymbol &&
-                        this.gridState[i + 3][j] == lastPlayedMoveSymbol) {
+                            this.gridState[i + 1][j] == lastPlayedMoveSymbol &&
+                            this.gridState[i + 2][j] == lastPlayedMoveSymbol &&
+                            this.gridState[i + 3][j] == lastPlayedMoveSymbol) {
                         return lastPlayedMoveSymbol;
                     }
-                } catch (Exception e) {
-                    continue;
-                }
             }
         }
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLUMNS; j++) {
-                try {
+        for (int i = 3; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS - 3; j++) {
                     if (this.gridState[i][j] == lastPlayedMoveSymbol &&
-                        this.gridState[i - 1][j + 1] == lastPlayedMoveSymbol &&
-                        this.gridState[i - 2][j + 2] == lastPlayedMoveSymbol &&
-                        this.gridState[i - 3][j + 3] == lastPlayedMoveSymbol) {
+                            this.gridState[i - 1][j + 1] == lastPlayedMoveSymbol &&
+                            this.gridState[i - 2][j + 2] == lastPlayedMoveSymbol &&
+                            this.gridState[i - 3][j + 3] == lastPlayedMoveSymbol) {
                         return lastPlayedMoveSymbol;
                     }
-                } catch (Exception e) {
-                    continue;
-                }
             }
         }
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLUMNS; j++) {
-                try {
+        for (int i = 3; i < ROWS; i++) {
+            for (int j = 3; j < COLUMNS; j++) {
                     if (this.gridState[i][j] == lastPlayedMoveSymbol &&
-                        this.gridState[i - 1][j - 1] == lastPlayedMoveSymbol &&
-                        this.gridState[i - 2][j - 2] == lastPlayedMoveSymbol &&
-                        this.gridState[i - 3][j - 3] == lastPlayedMoveSymbol) {
+                            this.gridState[i - 1][j - 1] == lastPlayedMoveSymbol &&
+                            this.gridState[i - 2][j - 2] == lastPlayedMoveSymbol &&
+                            this.gridState[i - 3][j - 3] == lastPlayedMoveSymbol) {
                         return lastPlayedMoveSymbol;
                     }
-                } catch (Exception e) {
-                    continue;
-                }
             }
         }
         return TOKEN_EMPTY_SYMBOL;
