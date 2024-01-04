@@ -28,7 +28,6 @@ public class AttackStrategy implements ComputerStrategy {
         for(int i = 0; i < connectFourGrid.COLUMNS; i++) {
             if(moveEvals[i] == bestMoveEvaluation) {
                 bestMoves.add(i);
-                System.out.println(i);
             }
         }
         Random r = new Random();

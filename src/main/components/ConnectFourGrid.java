@@ -118,6 +118,10 @@ public class ConnectFourGrid {
         return true;
     }
 
+    public char[][] getGridState() {
+        return this.gridState;
+    }
+
     public int getRandomColumnWithLeastTokens() {
         List<Integer> values = getColumnsWithLeastTokens();
         Random r = new Random();
