@@ -7,45 +7,31 @@ import java.util.*;
 public class AttackStrategy implements ComputerStrategy {
     @Override
     public int computerMoveColumn(ConnectFourGrid connectFourGrid) {
-        long start = System.nanoTime();
         int minimaxDepth = 10;
         int bestMoveEvaluation = Integer.MIN_VALUE;
-        Map<Integer, Integer> movesWithEval = new HashMap<>();
+        int[] moveEvals = new int[connectFourGrid.COLUMNS];
         List<Integer> bestMoves = new ArrayList<>();
 
         for(int j = 0; j < connectFourGrid.COLUMNS; j++) {
             if(connectFourGrid.isMoveInvalid(j)) {
-                movesWithEval.put(j, Integer.MIN_VALUE);
+                moveEvals[j] = Integer.MIN_VALUE;
                 continue;
             }
             connectFourGrid.insertToken(connectFourGrid.TOKEN_COMPUTER_SYMBOL, j);
             int moveEvaluation = minimax(connectFourGrid, minimaxDepth, Integer.MIN_VALUE, Integer.MAX_VALUE, false);
             connectFourGrid.removeTopToken(j);
-            movesWithEval.put(j, moveEvaluation);
+            moveEvals[j] = moveEvaluation;
             if(moveEvaluation > bestMoveEvaluation) {
                 bestMoveEvaluation = moveEvaluation;
             }
         }
         for(int i = 0; i < connectFourGrid.COLUMNS; i++) {
-            if(movesWithEval.get(i) == bestMoveEvaluation) {
+            if(moveEvals[i] == bestMoveEvaluation) {
                 bestMoves.add(i);
             }
         }
-        System.out.println("Time elapsed: " + (System.nanoTime()-start) / 1e6);
-        // if there's only one good move, we play that move
-        // if there are multiple good moves, but all of them are neutral, we play a random token in a column
-        // with the least amount of tokens
-        // if there are multiple good moves that lead to a win, we play one of them
-        if(bestMoves.size() == 1) {
-            return bestMoves.getFirst();
-        } else {
-            if(bestMoves.getFirst() == 0) {
-                return connectFourGrid.getRandomColumnWithLeastTokens();
-            } else {
-                Random r = new Random();
-                return bestMoves.get(r.nextInt(bestMoves.size()));
-            }
-        }
+        Random r = new Random();
+        return bestMoves.get(r.nextInt(bestMoves.size()));
     }
 
     private int minimax(ConnectFourGrid connectFourGrid, int depth, int alpha, int beta, boolean isComputerTurn) {
@@ -72,7 +58,7 @@ public class AttackStrategy implements ComputerStrategy {
                 connectFourGrid.removeTopToken(j);
                 alpha = Math.max(alpha, maxValue);
                 if(alpha >= beta) {
-                    break;
+                   break;
                 }
             }
             return maxValue;
