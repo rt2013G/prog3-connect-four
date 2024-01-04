@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import src.main.components.ConnectFourGrid;
 
+import java.util.Scanner;
+
 /**
  * This is the entry point of the application
  * @author Raffaele Talente
@@ -26,29 +28,28 @@ public class ConnectFour extends Application {
         stage.setScene(scene);
         stage.show();*/
         //ConnectFourGameHandler.getInstance().getGrid().printBoard();
-        ConnectFourGameHandler.getInstance().getGrid().insertToken(
-                ConnectFourGameHandler.getInstance().getGrid().TOKEN_PLAYER_SYMBOL, 0);
-        ConnectFourGameHandler.getInstance().getGrid().insertToken(
-                ConnectFourGameHandler.getInstance().getGrid().TOKEN_COMPUTER_SYMBOL, 2);
-        ConnectFourGameHandler.getInstance().getGrid().insertToken(
-                ConnectFourGameHandler.getInstance().getGrid().TOKEN_PLAYER_SYMBOL, 0);
-        ConnectFourGameHandler.getInstance().getGrid().insertToken(
-                ConnectFourGameHandler.getInstance().getGrid().TOKEN_COMPUTER_SYMBOL, 4);
-        ConnectFourGameHandler.getInstance().getGrid().insertToken(
-                ConnectFourGameHandler.getInstance().getGrid().TOKEN_PLAYER_SYMBOL, 4);
-        ConnectFourGameHandler.getInstance().getGrid().insertToken(
-                ConnectFourGameHandler.getInstance().getGrid().TOKEN_PLAYER_SYMBOL, 0);
-        ConnectFourGameHandler.getInstance().getGrid().insertToken(
-                ConnectFourGameHandler.getInstance().getGrid().TOKEN_COMPUTER_SYMBOL, 2);
-        ConnectFourGameHandler.getInstance().getGrid().insertToken(
-                ConnectFourGameHandler.getInstance().getGrid().TOKEN_COMPUTER_SYMBOL, 4);
-        ConnectFourGameHandler.getInstance().getGrid().insertToken(
-                ConnectFourGameHandler.getInstance().getGrid().TOKEN_PLAYER_SYMBOL, 4);
-        ConnectFourGameHandler.getInstance().makeComputerMove();
-        ConnectFourGameHandler.getInstance().getGrid().printBoard();
+        while(true) {
+            ConnectFourGameHandler.getInstance().makeComputerMove();
+            ConnectFourGameHandler.getInstance().getGrid().printBoard();
+            if(ConnectFourGameHandler.getInstance().getGrid().checkWinner()) {
+                ConnectFourGameHandler.getInstance().getGrid().printWinner();
+                break;
+            }
+            int column = getInput();
+            ConnectFourGameHandler.getInstance().getGrid().insertToken(
+                    ConnectFourGameHandler.getInstance().getGrid().TOKEN_PLAYER_SYMBOL, column);
+            if(ConnectFourGameHandler.getInstance().getGrid().checkWinner()) {
+                ConnectFourGameHandler.getInstance().getGrid().printBoard();
+                ConnectFourGameHandler.getInstance().getGrid().printWinner();
+                break;
+            }
+        }
+    }
 
-
-
+    private int getInput() {
+        Scanner s = new Scanner(System.in);
+        System.out.println("Enter a number between 1 and 7");
+        return s.nextInt() - 1;
     }
     public static void main(String[] args) {
         launch(args);

@@ -1,5 +1,9 @@
 package src.main.components;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class ConnectFourGrid {
     public final int ROWS = 6;
     public final int COLUMNS = 7;
@@ -62,6 +66,10 @@ public class ConnectFourGrid {
         }
     }
 
+    public boolean checkWinner() {
+        return getWinnerSymbolOrEmptySymbol() != TOKEN_EMPTY_SYMBOL;
+    }
+
     public void printWinner() {
         if(!checkWinner()) {
             System.out.println("There's no winner after the last token inserted");
@@ -86,6 +94,54 @@ public class ConnectFourGrid {
         return -1;
     }
 
+    public void resetGridState() {
+        this.gridState = initGridState();
+    }
+
+    public boolean isGridEmpty() {
+        for(int i = 0; i < ROWS; i++) {
+            for(int j = 0; j < COLUMNS; j++) {
+                if(this.gridState[i][j] != TOKEN_EMPTY_SYMBOL) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isGridFull() {
+        for(int j = 0; j < COLUMNS; j++) {
+            if(!isMoveInvalid(j)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int getRandomColumnWithLeastTokens() {
+        List<Integer> values = getColumnsWithLeastTokens();
+        Random r = new Random();
+        int index = r.nextInt(values.size());
+        return values.get(index);
+    }
+
+    public void removeTopToken(int column) {
+        for(int i = 0; i <= ROWS; i++) {
+            if(i == 0 && this.gridState[i][column] != TOKEN_EMPTY_SYMBOL) {
+                this.gridState[i][column] = TOKEN_EMPTY_SYMBOL;
+                return;
+            }
+            if(i == ROWS) {
+                // column was empty
+                return;
+            }
+            if(this.gridState[i][column] != TOKEN_EMPTY_SYMBOL) {
+                this.gridState[i][column] = TOKEN_EMPTY_SYMBOL;
+                return;
+            }
+        }
+    }
+
 
     private char[][] gridState;
     private char lastPlayedMoveSymbol = TOKEN_EMPTY_SYMBOL;
@@ -97,21 +153,41 @@ public class ConnectFourGrid {
                 grid[i][j] = TOKEN_EMPTY_SYMBOL;
             }
         }
-
         return grid;
-    }
-
-    private boolean checkWinner() {
-        return getWinnerSymbolOrEmptySymbol() != TOKEN_EMPTY_SYMBOL;
     }
 
     private boolean isGridCellEmpty(int row, int col) {
         return this.gridState[row][col] == TOKEN_EMPTY_SYMBOL;
     }
 
+    private List<Integer> getColumnsWithLeastTokens() {
+        List<Integer> values = new ArrayList<Integer>();
+        int[] tokenCount = new int[COLUMNS];
+        int minValue = Integer.MAX_VALUE;
+        for(int j = 0; j < COLUMNS; j++) {
+            int currentColumnCount = 0;
+            for(int i = ROWS - 1; i >= 0; i--) {
+                if(this.gridState[i][j] != TOKEN_EMPTY_SYMBOL) {
+                    currentColumnCount++;
+                }
+            }
+            tokenCount[j] = currentColumnCount;
+            if(currentColumnCount < minValue) {
+                minValue = currentColumnCount;
+            }
+        }
+        for(int i = 0; i < COLUMNS; i++) {
+            if(tokenCount[i] == minValue) {
+                values.add(i);
+            }
+        }
+        return values;
+    }
+
     private char getWinnerSymbolOrEmptySymbol() {
-        for (int j = 0; j < ROWS - 3; j++) {
-            for (int i = 0; i < COLUMNS; i++) {
+        // horizontal
+        for (int j = 0; j < COLUMNS; j++) {
+            for (int i = 0; i < ROWS; i++) {
                 try {
                     if (this.gridState[i][j] == lastPlayedMoveSymbol &&
                         this.gridState[i][j + 1] == lastPlayedMoveSymbol &&
@@ -124,8 +200,9 @@ public class ConnectFourGrid {
                 }
             }
         }
-        for (int i = 0; i < COLUMNS - 3; i++) {
-            for (int j = 0; j < ROWS; j++) {
+        // vertical
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
                 try {
                     if (this.gridState[i][j] == lastPlayedMoveSymbol &&
                         this.gridState[i + 1][j] == lastPlayedMoveSymbol &&
@@ -138,8 +215,8 @@ public class ConnectFourGrid {
                 }
             }
         }
-        for (int i = 3; i < COLUMNS; i++) {
-            for (int j = 0; j < ROWS - 3; j++) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
                 try {
                     if (this.gridState[i][j] == lastPlayedMoveSymbol &&
                         this.gridState[i - 1][j + 1] == lastPlayedMoveSymbol &&
@@ -152,8 +229,8 @@ public class ConnectFourGrid {
                 }
             }
         }
-        for (int i = 3; i < COLUMNS; i++) {
-            for (int j = 3; j < ROWS; j++) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
                 try {
                     if (this.gridState[i][j] == lastPlayedMoveSymbol &&
                         this.gridState[i - 1][j - 1] == lastPlayedMoveSymbol &&
