@@ -2,6 +2,7 @@
 notes.md
 *.out
 out/
+target/
 
 # Compiled class file
 *.class

@@ -1,9 +1,7 @@
 package src.main;
 
 import src.main.components.ConnectFourGrid;
-import src.main.computer.AttackStrategy;
 import src.main.computer.ComputerStrategy;
-import src.main.computer.DefenseStrategy;
 import src.main.computer.NeutralStrategy;
 
 public class ConnectFourGameHandler {
