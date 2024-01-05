@@ -3,6 +3,7 @@ notes.md
 *.out
 out/
 target/
+app.db
 
 # Compiled class file
 *.class

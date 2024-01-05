@@ -1,6 +1,6 @@
-package src.main.computer;
+package connectfour.computer;
 
-import src.main.components.ConnectFourGrid;
+import connectfour.components.ConnectFourGrid;
 
 public interface ComputerStrategy {
     int computerMoveColumn(ConnectFourGrid connectFourGrid);

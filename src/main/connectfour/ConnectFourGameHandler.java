@@ -1,8 +1,8 @@
-package src.main;
+package connectfour;
 
-import src.main.components.ConnectFourGrid;
-import src.main.computer.ComputerStrategy;
-import src.main.computer.NeutralStrategy;
+import connectfour.components.ConnectFourGrid;
+import connectfour.computer.ComputerStrategy;
+import connectfour.computer.NeutralStrategy;
 
 public class ConnectFourGameHandler {
     public static ConnectFourGameHandler getInstance() {

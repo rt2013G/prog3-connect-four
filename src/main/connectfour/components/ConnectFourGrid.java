@@ -1,4 +1,4 @@
-package src.main.components;
+package connectfour.components;
 
 import java.util.ArrayList;
 import java.util.List;

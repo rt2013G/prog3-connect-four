@@ -1,7 +1,6 @@
-package src.main.computer;
+package connectfour.computer;
 
-import src.main.components.ConnectFourGrid;
-
+import connectfour.components.ConnectFourGrid;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
