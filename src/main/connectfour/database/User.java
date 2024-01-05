@@ -1,14 +1,20 @@
-package connectfour.auth;
+package connectfour.database;
 
 public class User {
-    private String name;
-    private String surname;
+    private final String name;
+    private final String surname;
     private int numberOfWins;
 
     public User(String name, String surname) {
-        this.name = name;
-        this.surname = surname;
+        this.name = name.toLowerCase();
+        this.surname = surname.toLowerCase();
         this.numberOfWins = 0;
+    }
+
+    public User(String name, String surname, int numberOfWins) {
+        this.name = name.toLowerCase();
+        this.surname = surname.toLowerCase();
+        this.numberOfWins = numberOfWins;
     }
 
     public User(User user) {

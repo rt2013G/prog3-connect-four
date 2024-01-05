@@ -4,6 +4,7 @@ notes.md
 out/
 target/
 app.db
+last_game.txt
 
 # Compiled class file
 *.class

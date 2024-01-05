@@ -1,5 +1,7 @@
 package connectfour.components;
 
+import connectfour.auth.Authenticator;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -7,7 +9,7 @@ import java.util.Random;
 public class ConnectFourGrid {
     public final int ROWS = 6;
     public final int COLUMNS = 7;
-    public final char TOKEN_EMPTY_SYMBOL = ' ';
+    public final char TOKEN_EMPTY_SYMBOL = 'x';
     public final char TOKEN_COMPUTER_SYMBOL = 'c';
     public final char TOKEN_PLAYER_SYMBOL = 'p';
 
@@ -70,6 +72,14 @@ public class ConnectFourGrid {
         return getWinnerSymbolOrEmptySymbol() != TOKEN_EMPTY_SYMBOL;
     }
 
+    public char getLastPlayedMoveSymbol() {
+        return this.lastPlayedMoveSymbol;
+    }
+
+    public void setLastPlayedMoveSymbol(char lastPlayedMoveSymbol) {
+        this.lastPlayedMoveSymbol = lastPlayedMoveSymbol;
+    }
+
     public void printWinner() {
         if(!checkWinner()) {
             System.out.println("There's no winner after the last token inserted");
@@ -79,6 +89,7 @@ public class ConnectFourGrid {
                 System.out.println("Computer wins");
             } else if(winnerSymbol == TOKEN_PLAYER_SYMBOL) {
                 System.out.println("PLayer wins");
+                Authenticator.getInstance().getCurrentUser().addWin();
             }
         }
     }
