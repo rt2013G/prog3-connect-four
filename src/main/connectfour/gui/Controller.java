@@ -31,7 +31,7 @@ public class Controller {
 
     public void checkWinnerAndSwitchToLeaderboardIfGameOver() {
         if(GameHandler.getInstance().getGrid().checkWinner()) {
-            GameHandler.getInstance().getGrid().printWinnerAndUpdateUserWins();
+            GameHandler.getInstance().getGrid().checkWinnerAndUpdateUserWins();
             Database db = new Database();
             db.updateUser(GameHandler.getInstance().getCurrentUser());
             Controller.getInstance().switchGameToLeaderboard();
