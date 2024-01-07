@@ -32,6 +32,7 @@ public class ConnectFourGameHandler {
     public void makeComputerMove() {
         int column = this.computerStrategy.computerMoveColumn(this.connectFourGrid);
         this.connectFourGrid.insertToken(connectFourGrid.TOKEN_COMPUTER_SYMBOL, column);
+        this.connectFourGrid.setPlayerTurn(true);
     }
     private static final ConnectFourGameHandler Instance = new ConnectFourGameHandler();
     private ConnectFourGrid connectFourGrid = new ConnectFourGrid();
@@ -53,6 +54,8 @@ public class ConnectFourGameHandler {
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        } finally {
+            f.delete();
         }
     }
 

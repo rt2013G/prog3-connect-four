@@ -4,6 +4,8 @@ import connectfour.components.ConnectFourGrid;
 
 import javax.xml.transform.Result;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
     private Connection connection = null;
@@ -110,6 +112,31 @@ public class Database {
         } finally {
             closeConnection(connection);
         }
+    }
+
+    public List<User> getTopTenUsers() {
+        ArrayList<User> users = new ArrayList<>();
+        try {
+            connection = DriverManager.getConnection(protocol + "app.db");
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM users ORDER BY wins desc");
+            int count = 0;
+            while(rs.next()) {
+                User newUser = new User(rs.getString("name"), rs.getString("surname"), Integer.parseInt(rs.getString("wins")));
+                users.add(newUser);
+                count++;
+                if(count >= 10) {
+                    break;
+                }
+            }
+            connection.close();
+            return users;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            closeConnection(connection);
+        }
+        return users;
     }
 
     public String encodeGridState(ConnectFourGrid grid) {

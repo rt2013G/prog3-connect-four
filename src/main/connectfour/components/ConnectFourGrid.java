@@ -13,6 +13,8 @@ public class ConnectFourGrid {
     public final char TOKEN_COMPUTER_SYMBOL = 'c';
     public final char TOKEN_PLAYER_SYMBOL = 'p';
 
+    private boolean playerTurn = true;
+
     public ConnectFourGrid() {
         this.gridState = initGridState();
     }
@@ -54,6 +56,28 @@ public class ConnectFourGrid {
         }
     }
 
+    public boolean isPlayerTurn() {
+        return this.playerTurn;
+    }
+
+    public void setPlayerTurn(Boolean playerTurn) {
+        this.playerTurn = playerTurn;
+    }
+
+
+
+    public boolean isComputerTurn() {
+        return !this.playerTurn;
+    }
+
+    public boolean isPlayerToken(int row, int col) {
+        return this.gridState[row][col] == TOKEN_PLAYER_SYMBOL;
+    }
+
+    public boolean isComputerToken(int row, int col) {
+        return this.gridState[row][col] == TOKEN_COMPUTER_SYMBOL;
+    }
+
     public boolean isMoveInvalid(int column) {
         return this.gridState[0][column] != TOKEN_EMPTY_SYMBOL;
     }
@@ -80,7 +104,7 @@ public class ConnectFourGrid {
         this.lastPlayedMoveSymbol = lastPlayedMoveSymbol;
     }
 
-    public void printWinner() {
+    public void printWinnerAndUpdateUserWins() {
         if(!checkWinner()) {
             System.out.println("There's no winner after the last token inserted");
         } else {

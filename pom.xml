@@ -24,6 +24,11 @@
       <artifactId>sqlite-jdbc</artifactId>
       <version>3.44.1.0</version>
     </dependency>
+    <dependency>
+      <groupId>com.jtattoo</groupId>
+      <artifactId>JTattoo</artifactId>
+      <version>1.6.11</version>
+    </dependency>
   </dependencies>
 
   <build>
