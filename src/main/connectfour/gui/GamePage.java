@@ -54,7 +54,6 @@ public class GamePage extends JFrame {
                         if(GameHandler.getInstance().getGrid().isComputerTurn()) {
                             GameHandler.getInstance().makeComputerMove();
                             Controller.getInstance().updateGameView();
-                            GameHandler.getInstance().getGrid().printBoard();
                             return;
                         }
                         JButton source = (JButton) e.getSource();

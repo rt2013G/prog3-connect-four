@@ -28,13 +28,13 @@ public class GameHandler {
 
     public void authenticate(String name, String surname) {
         Database db = new Database();
-        User userFromDb = db.getUserOrEmptyUser(name, surname);
-        if(userFromDb instanceof EmptyUser) {
-            User user = new User(name, surname);
+        User user = db.getUserOrEmptyUser(name, surname);
+        if(user instanceof EmptyUser) {
+            user = new User(name, surname);
             db.insertUserIntoDatabase(user);
             loginUser(user);
         } else {
-            loginUser(userFromDb);
+            loginUser(user);
         }
     }
 

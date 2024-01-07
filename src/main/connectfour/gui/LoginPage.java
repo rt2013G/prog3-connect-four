@@ -60,8 +60,6 @@ public class LoginPage extends JFrame {
                     warningLabel.setText("Please insert a name and a surname");
                     return;
                 }
-                System.out.println(nameField.getText());
-                System.out.println(surnameField.getText());
                 GameHandler.getInstance().authenticate(nameField.getText(), surnameField.getText());
                 GameHandler.getInstance().setComputerStrategy(getComputerStrategyFromRadioButtons());
                 Controller.getInstance().switchLoginToGame();

@@ -43,10 +43,12 @@ public class Database {
             statement.setString(1, name);
             statement.setString(2, surname);
             ResultSet rs = statement.executeQuery();
+            if(rs.isBeforeFirst()) {
+                return new User(rs.getString("name"),
+                        rs.getString("surname"),
+                        rs.getInt("wins"));
+            }
             connection.close();
-            return new User(rs.getString("name"),
-                    rs.getString("surname"),
-                    rs.getInt("wins"));
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
