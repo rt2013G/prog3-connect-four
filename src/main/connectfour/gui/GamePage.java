@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GamePage extends JFrame {
+public class GamePage extends PageTemplate {
     private final int WIDTH = 650;
     private final int HEIGHT = 800;
     private final int ROWS = 6;
@@ -25,16 +25,18 @@ public class GamePage extends JFrame {
         init();
     }
 
-    private void init() {
+    public void createPage() {
         setContentPane(mainPanel);
-        fillBoard();
         setTitle("Let's play!");
         setSize(WIDTH, HEIGHT);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
-        setResizable(false);
-        addListeners();
+    }
+
+    public void fillPage() {
+        fillBoard();
+    }
+
+    public void addListeners() {
+        this.saveAndQuitButton.addActionListener(e -> GameHandler.getInstance().saveAndQuit());
     }
 
     private void fillBoard() {
@@ -50,7 +52,7 @@ public class GamePage extends JFrame {
 
                         if(GameHandler.getInstance().isComputerTurn()) {
                             GameHandler.getInstance().makeComputerMoveAndUpdateCurrentTurn();
-                            Controller.getInstance().updateGameView();
+                            updateBoardVisual();
                             return;
                         }
                         JButton source = (JButton) e.getSource();
@@ -86,9 +88,5 @@ public class GamePage extends JFrame {
                 }
             }
         }
-    }
-
-    public void addListeners() {
-        this.saveAndQuitButton.addActionListener(e -> GameHandler.getInstance().saveAndQuit());
     }
 }

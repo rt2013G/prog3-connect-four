@@ -14,9 +14,6 @@ public class Controller {
     }
 
     private Controller() {
-        loginPage.setVisible(false);
-        gamePage.setVisible(false);
-        leaderboardPage.setVisible(false);
     }
 
     public void initView() {
@@ -33,6 +30,7 @@ public class Controller {
             GameHandler.getInstance().checkWinnerAndUpdateUserWins();
             Database db = new Database();
             db.updateUser(GameHandler.getInstance().getCurrentUser());
+            leaderboardPage.setTitle(GameHandler.getInstance().getWinnerString());
             switchGameToLeaderboard();
         }
     }

@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginPage extends JFrame {
+public class LoginPage extends PageTemplate {
     public final int WIDTH = 400;
     public final int HEIGHT = 600;
     private JPanel globalPanel;
@@ -30,26 +30,19 @@ public class LoginPage extends JFrame {
         init();
     }
 
-    private void init() {
+    public void createPage() {
         setContentPane(globalPanel);
         setTitle("Welcome to Connect Four");
         setSize(WIDTH, HEIGHT);
         pack();
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        try {
-            UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        neutralRadioButton.setSelected(true);
-        warningLabel.setForeground(Color.RED);
-        setVisible(true);
-        setResizable(false);
-        addListeners();
     }
 
-    private void addListeners() {
+    public void fillPage() {
+        neutralRadioButton.setSelected(true);
+        warningLabel.setForeground(Color.RED);
+    }
+
+    public void addListeners() {
         this.playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

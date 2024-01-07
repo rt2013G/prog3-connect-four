@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class LeaderboardPage extends JFrame {
+public class LeaderboardPage extends PageTemplate {
     private final int WIDTH = 400;
     private final int HEIGHT = 600;
     private final int LEADERBOARD_LENGTH = 10;
@@ -21,18 +21,16 @@ public class LeaderboardPage extends JFrame {
         init();
     }
 
-    private void init() {
+    public void createPage() {
         setContentPane(mainPanel);
         setTitle("Thanks for playing!");
         pack();
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
-        setResizable(false);
-        addListeners();
     }
 
-    private void addListeners() {
+    public void fillPage() {
+    }
+
+    public void addListeners() {
         quitButton.addActionListener(e -> GameHandler.getInstance().exitWithoutSavingGame());
     }
 

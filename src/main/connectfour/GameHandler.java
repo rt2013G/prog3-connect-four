@@ -88,6 +88,16 @@ public class GameHandler {
         }
     }
 
+    public String getWinnerString() {
+        if(connectFourGrid.getWinnerSymbol() == connectFourGrid.TOKEN_PLAYER_SYMBOL) {
+            return "You win!";
+        } else if(connectFourGrid.getWinnerSymbol() == connectFourGrid.TOKEN_COMPUTER_SYMBOL) {
+            return "Computer wins!";
+        } else {
+            return "Draw!";
+        }
+    }
+
     public void loadLastGame() {
         File f = new File(GAME_FILE_NAME);
         if(f.exists()) {

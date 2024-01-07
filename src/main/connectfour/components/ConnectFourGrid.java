@@ -1,8 +1,5 @@
 package connectfour.components;
 
-import connectfour.GameHandler;
-import connectfour.database.Database;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
