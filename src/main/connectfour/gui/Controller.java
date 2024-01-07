@@ -1,7 +1,6 @@
 package connectfour.gui;
 
 import connectfour.GameHandler;
-import connectfour.auth.Authenticator;
 import connectfour.database.Database;
 
 public class Controller {
@@ -32,10 +31,9 @@ public class Controller {
 
     public void checkWinnerAndSwitchToLeaderboardIfGameOver() {
         if(GameHandler.getInstance().getGrid().checkWinner()) {
-            // update user wins only updates the java user object, not in the db TODO fix asap
             GameHandler.getInstance().getGrid().printWinnerAndUpdateUserWins();
             Database db = new Database();
-            db.updateUser(Authenticator.getInstance().getCurrentUser());
+            db.updateUser(GameHandler.getInstance().getCurrentUser());
             Controller.getInstance().switchGameToLeaderboard();
         }
     }

@@ -1,10 +1,11 @@
 package connectfour;
 
-import connectfour.auth.Authenticator;
 import connectfour.components.ConnectFourGrid;
 import connectfour.computer.ComputerStrategy;
 import connectfour.computer.NeutralStrategy;
 import connectfour.database.Database;
+import connectfour.database.EmptyUser;
+import connectfour.database.User;
 import connectfour.gui.Controller;
 
 import java.io.BufferedWriter;
@@ -17,11 +18,32 @@ public class GameHandler {
     private static final GameHandler Instance = new GameHandler();
     private final ConnectFourGrid connectFourGrid = new ConnectFourGrid();
     private ComputerStrategy computerStrategy = new NeutralStrategy();
+    private User currentUser;
 
     private GameHandler() {}
 
     public static GameHandler getInstance() {
         return Instance;
+    }
+
+    public void authenticate(String name, String surname) {
+        Database db = new Database();
+        User userFromDb = db.getUserOrEmptyUser(name, surname);
+        if(userFromDb instanceof EmptyUser) {
+            User user = new User(name, surname);
+            db.insertUserIntoDatabase(user);
+            loginUser(user);
+        } else {
+            loginUser(userFromDb);
+        }
+    }
+
+    public User getCurrentUser() {
+        return this.currentUser;
+    }
+
+    private void loginUser(User user) {
+        this.currentUser = user;
     }
 
     public ConnectFourGrid getGrid() {
@@ -61,6 +83,29 @@ public class GameHandler {
         }
     }
 
+    public void saveAndQuit() {
+        updateCurrentUserInDb();
+        String encodedString = encodeGridState(connectFourGrid);
+        char lastPlayedMove = connectFourGrid.getLastPlayedMoveSymbol();
+        File f = new File("last_game.txt");
+        try {
+            boolean fileExisted = !(f.createNewFile());
+            if(fileExisted) {
+                System.err.println("Unexpected error while saving and quitting");
+            }
+            FileWriter writer = new FileWriter(f);
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+            bufferedWriter.write(encodedString);
+            bufferedWriter.newLine();
+            bufferedWriter.write(lastPlayedMove);
+            bufferedWriter.close();
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        System.exit(0);
+    }
+
     private String encodeGridState(ConnectFourGrid grid) {
         char[][] gridState = grid.getGridState();
         StringBuilder sb = new StringBuilder();
@@ -86,42 +131,15 @@ public class GameHandler {
         return gridState;
     }
 
-    public void saveAndQuit() {
-        updateCurrentUserInDb();
-        String encodedString = encodeGridState(connectFourGrid);
-        char lastPlayedMove = connectFourGrid.getLastPlayedMoveSymbol();
-        File f = new File("last_game.txt");
-        try {
-            boolean fileExisted = f.createNewFile();
-            if(fileExisted) {
-                System.err.println("Unexpected error while saving and quitting");
-            }
-            FileWriter writer = new FileWriter(f);
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            bufferedWriter.write(encodedString);
-            bufferedWriter.newLine();
-            bufferedWriter.write(lastPlayedMove);
-            bufferedWriter.close();
-
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        System.exit(0);
-    }
-
     public void exitWithoutSavingGame() {
-        File f = new File("last_game.txt");
         updateCurrentUserInDb();
-        try {
-            f.delete();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        File f = new File("last_game.txt");
+        f.delete();
         System.exit(0);
     }
 
     private void updateCurrentUserInDb() {
         Database db = new Database();
-        db.updateUser(Authenticator.getInstance().getCurrentUser());
+        db.updateUser(currentUser);
     }
 }

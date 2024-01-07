@@ -1,8 +1,8 @@
 package connectfour.database;
 
 public class User {
-    private final String name;
-    private final String surname;
+    protected final String name;
+    protected final String surname;
     private int numberOfWins;
 
     public User(String name, String surname) {

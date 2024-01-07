@@ -1,13 +1,10 @@
 package connectfour.gui;
 
 import connectfour.GameHandler;
-import connectfour.auth.Authenticator;
 import connectfour.computer.AttackStrategy;
 import connectfour.computer.ComputerStrategy;
 import connectfour.computer.DefenseStrategy;
 import connectfour.computer.NeutralStrategy;
-import connectfour.database.Database;
-import connectfour.database.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -65,13 +62,7 @@ public class LoginPage extends JFrame {
                 }
                 System.out.println(nameField.getText());
                 System.out.println(surnameField.getText());
-                Database db = new Database();
-                User user = db.getUserOrNull(nameField.getText(), surnameField.getText());
-                if(user == null) {
-                    db.insertUserIntoDatabase(new User(nameField.getText(), surnameField.getText()));
-                } else {
-                    Authenticator.getInstance().loginUser(user);
-                }
+                GameHandler.getInstance().authenticate(nameField.getText(), surnameField.getText());
                 GameHandler.getInstance().setComputerStrategy(getComputerStrategyFromRadioButtons());
                 Controller.getInstance().switchLoginToGame();
             }

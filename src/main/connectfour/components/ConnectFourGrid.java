@@ -1,6 +1,7 @@
 package connectfour.components;
 
-import connectfour.auth.Authenticator;
+import connectfour.GameHandler;
+import connectfour.database.Database;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +116,9 @@ public class ConnectFourGrid {
                 System.out.println("Computer wins");
             } else if(winnerSymbol == TOKEN_PLAYER_SYMBOL) {
                 System.out.println("PLayer wins");
-                Authenticator.getInstance().getCurrentUser().addWin();
+                GameHandler.getInstance().getCurrentUser().addWin();
+                Database db = new Database();
+                db.updateUser(GameHandler.getInstance().getCurrentUser());
             }
         }
     }
