@@ -12,6 +12,8 @@ public class ConnectFourGrid {
     public final char TOKEN_EMPTY_SYMBOL = 'x';
     public final char TOKEN_COMPUTER_SYMBOL = 'c';
     public final char TOKEN_PLAYER_SYMBOL = 'p';
+    private char[][] gridState;
+    private char lastPlayedMoveSymbol = TOKEN_EMPTY_SYMBOL;
 
     private boolean playerTurn = true;
 
@@ -182,8 +184,7 @@ public class ConnectFourGrid {
     }
 
 
-    private char[][] gridState;
-    private char lastPlayedMoveSymbol = TOKEN_EMPTY_SYMBOL;
+
 
     private char[][] initGridState() {
         char[][] grid = new char[ROWS][COLUMNS];

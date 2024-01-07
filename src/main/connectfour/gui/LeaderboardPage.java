@@ -1,6 +1,6 @@
 package connectfour.gui;
 
-import connectfour.ConnectFourGameHandler;
+import connectfour.GameHandler;
 import connectfour.database.Database;
 import connectfour.database.User;
 
@@ -8,12 +8,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class LeaderboardPage extends JFrame {
     private final int WIDTH = 400;
     private final int HEIGHT = 600;
+    private final int LEADERBOARD_LENGTH = 10;
     private JPanel mainPanel;
     private JButton quitButton;
     private JPanel leaderboardContent;
@@ -38,7 +38,7 @@ public class LeaderboardPage extends JFrame {
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ConnectFourGameHandler.getInstance().exitWithoutSavingGame();
+                GameHandler.getInstance().exitWithoutSavingGame();
             }
         });
     }
@@ -47,7 +47,7 @@ public class LeaderboardPage extends JFrame {
         container = leaderboardContent;
         container.setLayout(new GridLayout(10, 1));
         Database db = new Database();
-        List<User> users = db.getTopTenUsers();
+        List<User> users = db.getTopUsersUpToValue(LEADERBOARD_LENGTH);
         for(User user : users) {
             JPanel panel = userEntry(user.getName(), user.getSurname(), user.getNumberOfWins());
             container.add(panel);

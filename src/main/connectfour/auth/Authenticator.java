@@ -1,6 +1,6 @@
 package connectfour.auth;
 
-import connectfour.ConnectFourGameHandler;
+import connectfour.GameHandler;
 import connectfour.computer.AttackStrategy;
 import connectfour.computer.ComputerStrategy;
 import connectfour.computer.DefenseStrategy;
@@ -81,6 +81,6 @@ public class Authenticator {
         } else {
             strategy = new NeutralStrategy();
         }
-        ConnectFourGameHandler.getInstance().setComputerStrategy(strategy);
+        GameHandler.getInstance().setComputerStrategy(strategy);
     }
 }

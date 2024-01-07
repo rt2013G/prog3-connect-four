@@ -1,6 +1,6 @@
 package connectfour.gui;
 
-import connectfour.ConnectFourGameHandler;
+import connectfour.GameHandler;
 import connectfour.auth.Authenticator;
 import connectfour.computer.AttackStrategy;
 import connectfour.computer.ComputerStrategy;
@@ -72,7 +72,7 @@ public class LoginPage extends JFrame {
                 } else {
                     Authenticator.getInstance().loginUser(user);
                 }
-                ConnectFourGameHandler.getInstance().setComputerStrategy(getComputerStrategyFromRadioButtons());
+                GameHandler.getInstance().setComputerStrategy(getComputerStrategyFromRadioButtons());
                 Controller.getInstance().switchLoginToGame();
             }
         });

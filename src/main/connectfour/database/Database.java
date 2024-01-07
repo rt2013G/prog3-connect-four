@@ -1,8 +1,5 @@
 package connectfour.database;
 
-import connectfour.components.ConnectFourGrid;
-
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,25 +93,7 @@ public class Database {
         }
     }
 
-    public void printTopUsers() {
-        try {
-            connection = DriverManager.getConnection(protocol + "app.db");
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM users ORDER BY wins desc");
-            while(rs.next()) {
-                System.out.println("name = " + rs.getString("name"));
-                System.out.println("surname = " + rs.getString("surname"));
-                System.out.println("wins = " + rs.getString("wins"));
-            }
-            connection.close();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            closeConnection(connection);
-        }
-    }
-
-    public List<User> getTopTenUsers() {
+    public List<User> getTopUsersUpToValue(int value) {
         ArrayList<User> users = new ArrayList<>();
         try {
             connection = DriverManager.getConnection(protocol + "app.db");
@@ -125,7 +104,7 @@ public class Database {
                 User newUser = new User(rs.getString("name"), rs.getString("surname"), Integer.parseInt(rs.getString("wins")));
                 users.add(newUser);
                 count++;
-                if(count >= 10) {
+                if(count >= value) {
                     break;
                 }
             }
@@ -137,30 +116,5 @@ public class Database {
             closeConnection(connection);
         }
         return users;
-    }
-
-    public String encodeGridState(ConnectFourGrid grid) {
-        char[][] gridState = grid.getGridState();
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < grid.ROWS; i++) {
-            for(int j = 0; j < grid.COLUMNS; j++) {
-                sb.append(gridState[i][j]);
-            }
-        }
-        return sb.toString();
-    }
-
-    public char[][] decodeGridState(String encodedString) {
-        ConnectFourGrid grid = new ConnectFourGrid();
-        int rows = grid.ROWS;
-        int cols = grid.COLUMNS;
-        char[][] gridState = new char[rows][cols];
-        char[] encodedStringArray = encodedString.toCharArray();
-        for(int i = 0; i < rows; i++) {
-            for(int j = 0; j < cols; j++) {
-                gridState[i][j] = encodedStringArray[i * cols + j];
-            }
-        }
-        return gridState;
     }
 }
