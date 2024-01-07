@@ -19,6 +19,7 @@ public class GameHandler {
     private final ConnectFourGrid connectFourGrid = new ConnectFourGrid();
     private ComputerStrategy computerStrategy = new NeutralStrategy();
     private User currentUser;
+    private final String GAME_FILE_NAME = "last_game.txt";
 
     private GameHandler() {}
 
@@ -46,22 +47,49 @@ public class GameHandler {
         this.currentUser = user;
     }
 
-    public ConnectFourGrid getGrid() {
-        return this.connectFourGrid;
+    public boolean isComputerTurn() {
+        return !(connectFourGrid.isPlayerTurn());
+    }
+
+    public boolean isPlayerToken(int row, int col) {
+        return connectFourGrid.getGridState()[row][col] == connectFourGrid.TOKEN_PLAYER_SYMBOL;
+    }
+
+    public boolean isComputerToken(int row, int col) {
+        return connectFourGrid.getGridState()[row][col] == connectFourGrid.TOKEN_COMPUTER_SYMBOL;
+    }
+
+    public void makePlayerMoveAndUpdateCurrentTurn(int column) {
+        connectFourGrid.insertTokenIfColumnValid(connectFourGrid.TOKEN_PLAYER_SYMBOL, column);
+        connectFourGrid.setPlayerTurn(false);
     }
 
     public void setComputerStrategy(ComputerStrategy computerStrategy) {
         this.computerStrategy = computerStrategy;
     }
 
-    public void makeComputerMove() {
+    public void makeComputerMoveAndUpdateCurrentTurn() {
         int column = this.computerStrategy.computerMoveColumn(this.connectFourGrid);
-        this.connectFourGrid.insertToken(connectFourGrid.TOKEN_COMPUTER_SYMBOL, column);
+        this.connectFourGrid.insertTokenIfColumnValid(connectFourGrid.TOKEN_COMPUTER_SYMBOL, column);
         this.connectFourGrid.setPlayerTurn(true);
     }
 
+    public boolean checkWinner() {
+        return connectFourGrid.getWinnerSymbol() != connectFourGrid.TOKEN_EMPTY_SYMBOL;
+    }
+
+    public void checkWinnerAndUpdateUserWins() {
+        if(checkWinner()) {
+            if(connectFourGrid.getWinnerSymbol() == connectFourGrid.TOKEN_PLAYER_SYMBOL) {
+                currentUser.addWin();
+                Database db = new Database();
+                db.updateUser(currentUser);
+            }
+        }
+    }
+
     public void loadLastGame() {
-        File f = new File("last_game.txt");
+        File f = new File(GAME_FILE_NAME);
         if(f.exists()) {
             parseGameFile(f);
         }
@@ -87,7 +115,7 @@ public class GameHandler {
         updateCurrentUserInDb();
         String encodedString = encodeGridState(connectFourGrid);
         char lastPlayedMove = connectFourGrid.getLastPlayedMoveSymbol();
-        File f = new File("last_game.txt");
+        File f = new File(GAME_FILE_NAME);
         try {
             boolean fileExisted = !(f.createNewFile());
             if(fileExisted) {
@@ -99,7 +127,6 @@ public class GameHandler {
             bufferedWriter.newLine();
             bufferedWriter.write(lastPlayedMove);
             bufferedWriter.close();
-
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -133,7 +160,7 @@ public class GameHandler {
 
     public void exitWithoutSavingGame() {
         updateCurrentUserInDb();
-        File f = new File("last_game.txt");
+        File f = new File(GAME_FILE_NAME);
         f.delete();
         System.exit(0);
     }

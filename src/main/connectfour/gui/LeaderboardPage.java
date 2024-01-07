@@ -6,8 +6,6 @@ import connectfour.database.User;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class LeaderboardPage extends JFrame {
@@ -35,12 +33,7 @@ public class LeaderboardPage extends JFrame {
     }
 
     private void addListeners() {
-        quitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GameHandler.getInstance().exitWithoutSavingGame();
-            }
-        });
+        quitButton.addActionListener(e -> GameHandler.getInstance().exitWithoutSavingGame());
     }
 
     public void updateLeaderboard() {

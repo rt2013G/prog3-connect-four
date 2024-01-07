@@ -29,7 +29,7 @@ public class ConnectFourGrid {
         this.gridState = newGrid;
     }
 
-    public void insertToken(char tokenSymbol, int column) {
+    public void insertTokenIfColumnValid(char tokenSymbol, int column) {
         if(isMoveInvalid(column)) {
             return;
         }
@@ -50,28 +50,16 @@ public class ConnectFourGrid {
         return this.playerTurn;
     }
 
-    public boolean isComputerTurn() {
-        return !this.playerTurn;
-    }
-
     public void setPlayerTurn(Boolean playerTurn) {
         this.playerTurn = playerTurn;
-    }
-
-    public boolean isPlayerToken(int row, int col) {
-        return this.gridState[row][col] == TOKEN_PLAYER_SYMBOL;
-    }
-
-    public boolean isComputerToken(int row, int col) {
-        return this.gridState[row][col] == TOKEN_COMPUTER_SYMBOL;
     }
 
     public boolean isMoveInvalid(int column) {
         return this.gridState[0][column] != TOKEN_EMPTY_SYMBOL;
     }
 
-    public boolean checkWinner() {
-        return getWinnerSymbolOrEmptySymbol() != TOKEN_EMPTY_SYMBOL;
+    public char getWinnerSymbol() {
+        return getWinnerSymbolOrEmptySymbol();
     }
 
     public char getLastPlayedMoveSymbol() {
@@ -80,16 +68,6 @@ public class ConnectFourGrid {
 
     public void setLastPlayedMoveSymbol(char lastPlayedMoveSymbol) {
         this.lastPlayedMoveSymbol = lastPlayedMoveSymbol;
-    }
-
-    public void checkWinnerAndUpdateUserWins() {
-        if(checkWinner()) {
-            if(getWinnerSymbolOrEmptySymbol() == TOKEN_PLAYER_SYMBOL) {
-                GameHandler.getInstance().getCurrentUser().addWin();
-                Database db = new Database();
-                db.updateUser(GameHandler.getInstance().getCurrentUser());
-            }
-        }
     }
 
     public int getGridEvaluation(char currentTurnSymbol) {

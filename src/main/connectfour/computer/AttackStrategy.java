@@ -16,7 +16,7 @@ public class AttackStrategy implements ComputerStrategy {
                 moveEvals[j] = Integer.MIN_VALUE;
                 continue;
             }
-            connectFourGrid.insertToken(connectFourGrid.TOKEN_COMPUTER_SYMBOL, j);
+            connectFourGrid.insertTokenIfColumnValid(connectFourGrid.TOKEN_COMPUTER_SYMBOL, j);
             int moveEvaluation = minimax(connectFourGrid, minimaxDepth, Integer.MIN_VALUE, Integer.MAX_VALUE, false);
             connectFourGrid.removeTopToken(j);
             moveEvals[j] = moveEvaluation;
@@ -52,7 +52,7 @@ public class AttackStrategy implements ComputerStrategy {
                 if(connectFourGrid.isMoveInvalid(j)) {
                     continue;
                 }
-                connectFourGrid.insertToken(connectFourGrid.TOKEN_COMPUTER_SYMBOL, j);
+                connectFourGrid.insertTokenIfColumnValid(connectFourGrid.TOKEN_COMPUTER_SYMBOL, j);
                 maxValue = Math.max(maxValue, minimax(connectFourGrid, depth - 1, alpha, beta, false));
                 connectFourGrid.removeTopToken(j);
                 alpha = Math.max(alpha, maxValue);
@@ -67,7 +67,7 @@ public class AttackStrategy implements ComputerStrategy {
                 if(connectFourGrid.isMoveInvalid(j)) {
                     continue;
                 }
-                connectFourGrid.insertToken(connectFourGrid.TOKEN_PLAYER_SYMBOL, j);
+                connectFourGrid.insertTokenIfColumnValid(connectFourGrid.TOKEN_PLAYER_SYMBOL, j);
                 minValue = Math.min(minValue, minimax(connectFourGrid, depth - 1, alpha, beta, true));
                 connectFourGrid.removeTopToken(j);
                 beta = Math.min(beta, minValue);

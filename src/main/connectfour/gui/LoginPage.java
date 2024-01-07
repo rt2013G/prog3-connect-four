@@ -12,16 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginPage extends JFrame {
-    public static void main(String... args) {
-        LoginPage page = new LoginPage();
-    }
-
     public final int WIDTH = 400;
     public final int HEIGHT = 600;
-    public LoginPage() {
-        init();
-        addListeners();
-    }
     private JPanel globalPanel;
     private JPanel mainPanel;
     private JTextField nameField;
@@ -33,6 +25,10 @@ public class LoginPage extends JFrame {
     private JPanel radioButtonSubPanel;
     private JLabel warningLabel;
     private JButton playButton;
+
+    public LoginPage() {
+        init();
+    }
 
     private void init() {
         setContentPane(globalPanel);
@@ -50,6 +46,7 @@ public class LoginPage extends JFrame {
         warningLabel.setForeground(Color.RED);
         setVisible(true);
         setResizable(false);
+        addListeners();
     }
 
     private void addListeners() {

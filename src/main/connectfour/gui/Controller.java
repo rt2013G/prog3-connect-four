@@ -4,10 +4,9 @@ import connectfour.GameHandler;
 import connectfour.database.Database;
 
 public class Controller {
-    private static LoginPage loginPage = new LoginPage();
-    private static GamePage gamePage = new GamePage();
-    private static LeaderboardPage leaderboardPage = new LeaderboardPage();
-
+    private static final LoginPage loginPage = new LoginPage();
+    private static final GamePage gamePage = new GamePage();
+    private static final LeaderboardPage leaderboardPage = new LeaderboardPage();
     private static final Controller Instance = new Controller();
 
     public static Controller getInstance() {
@@ -30,11 +29,11 @@ public class Controller {
     }
 
     public void checkWinnerAndSwitchToLeaderboardIfGameOver() {
-        if(GameHandler.getInstance().getGrid().checkWinner()) {
-            GameHandler.getInstance().getGrid().checkWinnerAndUpdateUserWins();
+        if(GameHandler.getInstance().checkWinner()) {
+            GameHandler.getInstance().checkWinnerAndUpdateUserWins();
             Database db = new Database();
             db.updateUser(GameHandler.getInstance().getCurrentUser());
-            Controller.getInstance().switchGameToLeaderboard();
+            switchGameToLeaderboard();
         }
     }
 

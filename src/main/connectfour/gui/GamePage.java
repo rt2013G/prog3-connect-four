@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 public class GamePage extends JFrame {
     private final int WIDTH = 650;
     private final int HEIGHT = 800;
-
     private final int ROWS = 6;
     private final int COLUMNS = 7;
     private JPanel mainPanel;
@@ -19,10 +18,8 @@ public class GamePage extends JFrame {
     private JPanel inputPanel;
     private JLabel InputPrompt;
     private JButton saveAndQuitButton;
-
     private Container container;
-
-    private JButton[][] connectFourBoardGridButtons = new JButton[ROWS][COLUMNS];
+    private final JButton[][] connectFourBoardGridButtons = new JButton[ROWS][COLUMNS];
 
     public GamePage() {
         init();
@@ -51,8 +48,8 @@ public class GamePage extends JFrame {
                     public void actionPerformed(ActionEvent e) {
                         Controller.getInstance().checkWinnerAndSwitchToLeaderboardIfGameOver();
 
-                        if(GameHandler.getInstance().getGrid().isComputerTurn()) {
-                            GameHandler.getInstance().makeComputerMove();
+                        if(GameHandler.getInstance().isComputerTurn()) {
+                            GameHandler.getInstance().makeComputerMoveAndUpdateCurrentTurn();
                             Controller.getInstance().updateGameView();
                             return;
                         }
@@ -60,8 +57,7 @@ public class GamePage extends JFrame {
                         for(int i = 0; i < ROWS; i++) {
                             for(int j = 0; j < COLUMNS; j++) {
                                 if(source == connectFourBoardGridButtons[i][j]) {
-                                    insertVisualToken(j);
-                                    updateBoardVisual();
+                                    insertPlayerToken(j);
                                     return;
                                 }
                             }
@@ -74,19 +70,18 @@ public class GamePage extends JFrame {
         }
     }
 
-    private void insertVisualToken(int j) {
-        GameHandler.getInstance().getGrid().insertToken(
-                GameHandler.getInstance().getGrid().TOKEN_PLAYER_SYMBOL, j);
-        GameHandler.getInstance().getGrid().setPlayerTurn(false);
+    private void insertPlayerToken(int j) {
+        GameHandler.getInstance().makePlayerMoveAndUpdateCurrentTurn(j);
+        updateBoardVisual();
     }
 
     public void updateBoardVisual() {
         for(int i = 0; i < ROWS; i++) {
             for(int j = 0; j < COLUMNS; j++) {
-                if(GameHandler.getInstance().getGrid().isPlayerToken(i, j)) {
+                if(GameHandler.getInstance().isPlayerToken(i, j)) {
                     connectFourBoardGridButtons[i][j].setBackground(Color.RED);
                 }
-                if(GameHandler.getInstance().getGrid().isComputerToken(i, j)) {
+                if(GameHandler.getInstance().isComputerToken(i, j)) {
                     connectFourBoardGridButtons[i][j].setBackground(Color.YELLOW);
                 }
             }
@@ -94,11 +89,6 @@ public class GamePage extends JFrame {
     }
 
     public void addListeners() {
-        this.saveAndQuitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GameHandler.getInstance().saveAndQuit();
-            }
-        });
+        this.saveAndQuitButton.addActionListener(e -> GameHandler.getInstance().saveAndQuit());
     }
 }
