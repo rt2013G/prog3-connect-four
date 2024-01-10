@@ -1,6 +1,6 @@
 package connectfour.gui;
 
-import connectfour.GameHandler;
+import connectfour.GameLoader;
 import connectfour.database.Database;
 import connectfour.database.User;
 
@@ -24,14 +24,14 @@ public class LeaderboardPage extends PageTemplate {
     public void createPage() {
         setContentPane(mainPanel);
         setTitle("Thanks for playing!");
-        pack();
     }
 
     public void fillPage() {
+        pack();
     }
 
     public void addListeners() {
-        quitButton.addActionListener(e -> GameHandler.getInstance().exitWithoutSavingGame());
+        quitButton.addActionListener(e -> (new GameLoader()).exitWithoutSavingGame());
     }
 
     public void updateLeaderboard() {

@@ -59,7 +59,8 @@ public class GamePage extends PageTemplate {
                         for(int i = 0; i < ROWS; i++) {
                             for(int j = 0; j < COLUMNS; j++) {
                                 if(source == connectFourBoardGridButtons[i][j]) {
-                                    insertPlayerToken(j);
+                                    GameHandler.getInstance().makePlayerMoveAndUpdateCurrentTurn(j);
+                                    updateBoardVisual();
                                     return;
                                 }
                             }
@@ -70,11 +71,6 @@ public class GamePage extends PageTemplate {
                 container.add(connectFourBoardGridButtons[i][j]);
             }
         }
-    }
-
-    private void insertPlayerToken(int j) {
-        GameHandler.getInstance().makePlayerMoveAndUpdateCurrentTurn(j);
-        updateBoardVisual();
     }
 
     public void updateBoardVisual() {

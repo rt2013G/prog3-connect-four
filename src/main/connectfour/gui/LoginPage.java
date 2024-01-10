@@ -34,10 +34,10 @@ public class LoginPage extends PageTemplate {
         setContentPane(globalPanel);
         setTitle("Welcome to Connect Four");
         setSize(WIDTH, HEIGHT);
-        pack();
     }
 
     public void fillPage() {
+        pack();
         neutralRadioButton.setSelected(true);
         warningLabel.setForeground(Color.RED);
     }

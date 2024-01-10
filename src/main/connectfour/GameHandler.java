@@ -8,25 +8,39 @@ import connectfour.database.EmptyUser;
 import connectfour.database.User;
 import connectfour.gui.Controller;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
-
+/**
+ * Defines a set of behaviors that lets clients interact with a specific game without exposing the underlying grid.
+ * Implements the Singleton pattern so that there's only one instance of it, while providing a unique access
+ * point to its methods.
+ *
+ * @author Raffaele Talente
+ * @see ConnectFourGrid
+ */
 public class GameHandler {
     private static final GameHandler Instance = new GameHandler();
-    private final ConnectFourGrid connectFourGrid = new ConnectFourGrid();
+    private ConnectFourGrid connectFourGrid = new ConnectFourGrid();
     private ComputerStrategy computerStrategy = new NeutralStrategy();
     private User currentUser;
-    private final String GAME_FILE_NAME = "last_game.txt";
 
-    private GameHandler() {}
+    private GameHandler() {
+    }
 
     public static GameHandler getInstance() {
         return Instance;
     }
 
+    /**
+     * Queries the database for a user, if a maching user row exists already, its data is retrieved from the database
+     * and returned as a User object, then the user is logged in.
+     * If it doesn't exist, the method creates a new User and inserts it into the database
+     *
+     * @param name Name of the user
+     * @param surname Surname of the user
+     * @see #loginUser(User)
+     * @see Database#getUserOrEmptyUser(String, String)
+     * @see Database#insertUserIntoDatabase(User)
+     * @see User
+     */
     public void authenticate(String name, String surname) {
         Database db = new Database();
         User user = db.getUserOrEmptyUser(name, surname);
@@ -39,45 +53,98 @@ public class GameHandler {
         }
     }
 
+    /**
+     * Allows access to the current logged user
+     *
+     * @return The current user logged into the application
+     */
     public User getCurrentUser() {
         return this.currentUser;
     }
 
+    /**
+     * Logs in a user object
+     *
+     * @param user A user object representing a user in the database
+     */
     private void loginUser(User user) {
         this.currentUser = user;
     }
 
+    /**
+     * Checks if it's the computer turn to add a token, without exposing the grid method
+     *
+     * @return True if it's computer turn, False if it isn't
+     * @see ConnectFourGrid#isPlayerTurn()
+     */
     public boolean isComputerTurn() {
         return !(connectFourGrid.isPlayerTurn());
     }
 
+    /**
+     * Checks if a specific position in the grid contains a player token
+     *
+     * @param row The row in the grid to check
+     * @param col The column in the grid to check
+     * @return True if there's a player token in the specified position, False otherwise
+     * @see ConnectFourGrid#TOKEN_PLAYER_SYMBOL
+     */
     public boolean isPlayerToken(int row, int col) {
         return connectFourGrid.getGridState()[row][col] == connectFourGrid.TOKEN_PLAYER_SYMBOL;
     }
 
+    /**
+     * Checks if a specific position in the grid contains a computer token
+     *
+     * @param row The row in the grid to check
+     * @param col The column in the grid to check
+     * @return True if there's a computer token in the specified position, False otherwise
+     * @see ConnectFourGrid#TOKEN_COMPUTER_SYMBOL
+     */
     public boolean isComputerToken(int row, int col) {
         return connectFourGrid.getGridState()[row][col] == connectFourGrid.TOKEN_COMPUTER_SYMBOL;
     }
 
+    /**
+     * Inserts the token in the specified column and updates the current turn to that of the computer
+     *
+     * @param column The column to insert the token into
+     * @see ConnectFourGrid#insertTokenIfColumnValid(char, int)
+     */
     public void makePlayerMoveAndUpdateCurrentTurn(int column) {
         connectFourGrid.insertTokenIfColumnValid(connectFourGrid.TOKEN_PLAYER_SYMBOL, column);
         connectFourGrid.setPlayerTurn(false);
     }
 
+    /**
+     * Sets the computer strategy (also known as "gamemode") of the current game
+     *
+     * @param computerStrategy The concrete strategy to use
+     * @see ComputerStrategy
+     */
     public void setComputerStrategy(ComputerStrategy computerStrategy) {
         this.computerStrategy = computerStrategy;
     }
 
+    /**
+     * Uses the current set strategy to obtain a move from the computer, calls the method to insert a computer token
+     * in the obtained column and sets the current turn to that of the player's
+     *
+     * @see ComputerStrategy#computerMoveColumn(ConnectFourGrid)
+     * @see ConnectFourGrid#insertTokenIfColumnValid(char, int)
+     */
     public void makeComputerMoveAndUpdateCurrentTurn() {
         int column = this.computerStrategy.computerMoveColumn(this.connectFourGrid);
         this.connectFourGrid.insertTokenIfColumnValid(connectFourGrid.TOKEN_COMPUTER_SYMBOL, column);
         this.connectFourGrid.setPlayerTurn(true);
     }
 
-    public boolean checkWinner() {
-        return connectFourGrid.getWinnerSymbol() != connectFourGrid.TOKEN_EMPTY_SYMBOL;
-    }
-
+    /**
+     * Checks if there's a winner and if said winner is the player, if that's the case updates the win count
+     * of the current logged player
+     *
+     * @see User#addWin()
+     */
     public void checkWinnerAndUpdateUserWins() {
         if(checkWinner()) {
             if(connectFourGrid.getWinnerSymbol() == connectFourGrid.TOKEN_PLAYER_SYMBOL) {
@@ -88,6 +155,21 @@ public class GameHandler {
         }
     }
 
+    /**
+     * Checks the winner of the current position without exposing the grid method
+     *
+     * @return True if there's a winner, False otherwise
+     * @see ConnectFourGrid#getWinnerSymbol()
+     */
+    public boolean checkWinner() {
+        return connectFourGrid.getWinnerSymbol() != connectFourGrid.TOKEN_EMPTY_SYMBOL;
+    }
+
+    /**
+     * Converts the winner of the current position into a readable String
+     *
+     * @return The appropriate String based on the evaluated grid position
+     */
     public String getWinnerString() {
         if(connectFourGrid.getWinnerSymbol() == connectFourGrid.TOKEN_PLAYER_SYMBOL) {
             return "You win!";
@@ -98,85 +180,30 @@ public class GameHandler {
         }
     }
 
-    public void loadLastGame() {
-        File f = new File(GAME_FILE_NAME);
-        if(f.exists()) {
-            parseGameFile(f);
-        }
+    /**
+     * Initializes the game by creating the necessary tables in the database, then loads a saved game and
+     * makes the controller update the game view
+     *
+     * @see GameLoader#parseGameFile()
+     * @see Database#initTables()
+     * @see Controller#updateGameView()
+     */
+    public void initGame() {
+        Database db = new Database();
+        db.initTables();
+        GameLoader loader = new GameLoader();
+        this.connectFourGrid = loader.parseGameFile();
         Controller.getInstance().updateGameView();
     }
 
-    private void parseGameFile(File f) {
-        try {
-                Scanner s = new Scanner(f);
-                String encodedGridState = s.nextLine();
-                String turnSymbol = s.nextLine();
-                this.connectFourGrid.setGridState(decodeGridState(encodedGridState));
-                this.connectFourGrid.setLastPlayedMoveSymbol(turnSymbol.toCharArray()[0]);
-                f.delete();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            f.delete();
-        }
-    }
-
+    /**
+     * Uses the loader to save the current game grid into a file and then exits
+     *
+     * @see GameLoader#saveGridToGameFile(ConnectFourGrid)
+     */
     public void saveAndQuit() {
-        updateCurrentUserInDb();
-        String encodedString = encodeGridState(connectFourGrid);
-        char lastPlayedMove = connectFourGrid.getLastPlayedMoveSymbol();
-        File f = new File(GAME_FILE_NAME);
-        try {
-            boolean fileExisted = !(f.createNewFile());
-            if(fileExisted) {
-                System.err.println("Unexpected error while saving and quitting");
-            }
-            FileWriter writer = new FileWriter(f);
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            bufferedWriter.write(encodedString);
-            bufferedWriter.newLine();
-            bufferedWriter.write(lastPlayedMove);
-            bufferedWriter.close();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+        GameLoader loader = new GameLoader();
+        loader.saveGridToGameFile(connectFourGrid);
         System.exit(0);
-    }
-
-    private String encodeGridState(ConnectFourGrid grid) {
-        char[][] gridState = grid.getGridState();
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < grid.ROWS; i++) {
-            for(int j = 0; j < grid.COLUMNS; j++) {
-                sb.append(gridState[i][j]);
-            }
-        }
-        return sb.toString();
-    }
-
-    private char[][] decodeGridState(String encodedString) {
-        ConnectFourGrid grid = new ConnectFourGrid();
-        int rows = grid.ROWS;
-        int cols = grid.COLUMNS;
-        char[][] gridState = new char[rows][cols];
-        char[] encodedStringArray = encodedString.toCharArray();
-        for(int i = 0; i < rows; i++) {
-            for(int j = 0; j < cols; j++) {
-                gridState[i][j] = encodedStringArray[i * cols + j];
-            }
-        }
-        return gridState;
-    }
-
-    public void exitWithoutSavingGame() {
-        updateCurrentUserInDb();
-        File f = new File(GAME_FILE_NAME);
-        f.delete();
-        System.exit(0);
-    }
-
-    private void updateCurrentUserInDb() {
-        Database db = new Database();
-        db.updateUser(currentUser);
     }
 }
