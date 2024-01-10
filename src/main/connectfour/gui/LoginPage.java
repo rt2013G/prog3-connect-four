@@ -11,6 +11,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The login page allows the user to insert their name and surname and select a gamemode.
+ *
+ * @author Raffaele Talente
+ */
 public class LoginPage extends PageTemplate {
     public final int WIDTH = 400;
     public final int HEIGHT = 600;
@@ -57,6 +62,9 @@ public class LoginPage extends PageTemplate {
         });
     }
 
+    /**
+     * @return The appropriate chosen computer strategy based on the radio buttons
+     */
     private ComputerStrategy getComputerStrategyFromRadioButtons() {
         if(neutralRadioButton.isSelected()) {
             return new NeutralStrategy();

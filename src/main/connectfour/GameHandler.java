@@ -15,6 +15,7 @@ import connectfour.gui.Controller;
  *
  * @author Raffaele Talente
  * @see ConnectFourGrid
+ * @see "Design Patterns, GoF, 1994"
  */
 public class GameHandler {
     private static final GameHandler Instance = new GameHandler();
@@ -32,14 +33,14 @@ public class GameHandler {
     /**
      * Queries the database for a user, if a maching user row exists already, its data is retrieved from the database
      * and returned as a User object, then the user is logged in.
-     * If it doesn't exist, the method creates a new User and inserts it into the database
+     * If it doesn't exist, it creates a new User and inserts it into the database
      *
      * @param name Name of the user
      * @param surname Surname of the user
      * @see #loginUser(User)
+     * @see User
      * @see Database#getUserOrEmptyUser(String, String)
      * @see Database#insertUserIntoDatabase(User)
-     * @see User
      */
     public void authenticate(String name, String surname) {
         Database db = new Database();
@@ -197,13 +198,27 @@ public class GameHandler {
     }
 
     /**
-     * Uses the loader to save the current game grid into a file and then exits
+     * Updates the current user info in the database, calls the loader to save the grid into the game file
+     * and then exits
      *
      * @see GameLoader#saveGridToGameFile(ConnectFourGrid)
      */
     public void saveAndQuit() {
+        (new Database()).updateUser(currentUser);
         GameLoader loader = new GameLoader();
         loader.saveGridToGameFile(connectFourGrid);
+        System.exit(0);
+    }
+
+    /**
+     * Updates the current user in the database, calls the loader to delete the game file and then exits
+     *
+     * @see GameLoader#deleteGameFile()
+     */
+    public void exitWithoutSavingGame() {
+        (new Database()).updateUser(currentUser);
+        GameLoader loader = new GameLoader();
+        loader.deleteGameFile();
         System.exit(0);
     }
 }

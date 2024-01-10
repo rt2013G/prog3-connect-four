@@ -1,7 +1,6 @@
 package connectfour;
 
 import connectfour.components.ConnectFourGrid;
-import connectfour.database.Database;
 import connectfour.utils.GridCodec;
 
 import java.io.BufferedWriter;
@@ -10,9 +9,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * Exposes methods to load the game file and to store a grid into a file
+ *
+ * @author Raffaele Talente
+ * @see GridCodec
+ */
 public class GameLoader {
     private final String GAME_FILE_NAME = "last_game.txt";
 
+    /**
+     * Parses the game file decoding it with the codec methods
+     *
+     * @return A new grid if the game file didn't exist, a decoded grid if it did
+     * @see #GAME_FILE_NAME
+     */
     public ConnectFourGrid parseGameFile() {
         File f = new File(GAME_FILE_NAME);
         ConnectFourGrid grid = new ConnectFourGrid();
@@ -37,8 +48,14 @@ public class GameLoader {
         return grid;
     }
 
+    /**
+     * Calls the codec to convert a ConnectFourGrid into two Strings representing the grid state, and then
+     * stores the result into the game file
+     *
+     * @param grid The grid to encode and save into a file
+     * @see #GAME_FILE_NAME
+     */
     public void saveGridToGameFile(ConnectFourGrid grid) {
-        updateCurrentUserInDb();
         GridCodec codec = new GridCodec();
         String encodedString = codec.encodeGridState(grid);
         char lastPlayedMove = grid.getLastPlayedMoveSymbol();
@@ -59,15 +76,15 @@ public class GameLoader {
         }
     }
 
-    public void exitWithoutSavingGame() {
-        updateCurrentUserInDb();
+    /**
+     * Deletes the game file if it exists
+     *
+     * @see #GAME_FILE_NAME
+     */
+    public void deleteGameFile() {
         File f = new File(GAME_FILE_NAME);
-        f.delete();
-        System.exit(0);
-    }
-
-    private void updateCurrentUserInDb() {
-        Database db = new Database();
-        db.updateUser(GameHandler.getInstance().getCurrentUser());
+        if(f.exists()) {
+            f.delete();
+        }
     }
 }

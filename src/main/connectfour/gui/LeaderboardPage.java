@@ -1,5 +1,6 @@
 package connectfour.gui;
 
+import connectfour.GameHandler;
 import connectfour.GameLoader;
 import connectfour.database.Database;
 import connectfour.database.User;
@@ -8,6 +9,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * The leaderboard page displays the current leaderboard based on the number of wins and allows the user
+ * to quit the game.
+ *
+ * @author Raffaele Talente
+ */
 public class LeaderboardPage extends PageTemplate {
     private final int WIDTH = 400;
     private final int HEIGHT = 600;
@@ -31,12 +38,17 @@ public class LeaderboardPage extends PageTemplate {
     }
 
     public void addListeners() {
-        quitButton.addActionListener(e -> (new GameLoader()).exitWithoutSavingGame());
+        quitButton.addActionListener(e -> GameHandler.getInstance().exitWithoutSavingGame());
     }
 
+    /**
+     * Fills the main content panel with a list of users with the most wins retrieved from the database
+     *
+     * @see Database#getTopUsersUpToValue(int)
+     */
     public void updateLeaderboard() {
         container = leaderboardContent;
-        container.setLayout(new GridLayout(10, 1));
+        container.setLayout(new GridLayout(LEADERBOARD_LENGTH, 1));
         Database db = new Database();
         List<User> users = db.getTopUsersUpToValue(LEADERBOARD_LENGTH);
         for(User user : users) {
@@ -46,6 +58,14 @@ public class LeaderboardPage extends PageTemplate {
         setSize(WIDTH, HEIGHT);
     }
 
+    /**
+     * Standardizes the creation of the JPanels that store the appropriate information of each of the top users
+     *
+     * @param name The name of the user
+     * @param surname The surname of the user
+     * @param wins The wins of the user
+     * @return A JPanel displaying these parameters
+     */
     private JPanel userEntry(String name, String surname, int wins) {
         JPanel panel = new JPanel();
         JLabel nameLabel = new JLabel();

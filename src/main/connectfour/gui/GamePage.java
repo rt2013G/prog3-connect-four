@@ -8,6 +8,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The game page contains the visual representation of the actual game grid
+ *
+ * @author Raffaele Talente
+ */
 public class GamePage extends PageTemplate {
     private final int WIDTH = 650;
     private final int HEIGHT = 800;
@@ -39,6 +44,11 @@ public class GamePage extends PageTemplate {
         this.saveAndQuitButton.addActionListener(e -> GameHandler.getInstance().saveAndQuit());
     }
 
+    /**
+     * Fills the page with a grid of button, each button represents a token slot.
+     * When any button is pressed, it checks for the current turn, if it's the computer then it makes a computer move,
+     * otherwise inserts a player token in the column of that button.
+     */
     private void fillBoard() {
         container = boardPanel;
         container.setLayout(new GridLayout(ROWS, COLUMNS));
@@ -73,6 +83,12 @@ public class GamePage extends PageTemplate {
         }
     }
 
+    /**
+     * Updates token slot depending on the token in it, player tokens are displayed in red, computer tokens
+     * are displayed in yellow.
+     *
+     * @see #connectFourBoardGridButtons
+     */
     public void updateBoardVisual() {
         for(int i = 0; i < ROWS; i++) {
             for(int j = 0; j < COLUMNS; j++) {

@@ -3,7 +3,23 @@ package connectfour.computer;
 import connectfour.components.ConnectFourGrid;
 import java.util.*;
 
+/**
+ * The attack strategy or gamemode is the most difficult gamemode as it uses the minimax algorithm with alpha-beta
+ * pruning to find the best possible move for the computer
+ *
+ * @author Raffaele Talente
+ * @see "Alpha-beta pruning, Wikipedia"
+ */
 public class AttackStrategy implements ComputerStrategy {
+    /**
+     * Iterates all possible moves creating a list of moves where the index in the list represents the column of the
+     * move and corresponding value represents its evaluation. Invalid moves are evaluated as minus infinity so
+     * they cannot be picked.
+     * The evaluation is done with the minimax algorithm using alpha-beta pruning.
+     *
+     * @param connectFourGrid A ConnectFourGrid object to evaluate in order to get a column
+     * @return The column to insert the token into
+     */
     @Override
     public int computerMoveColumn(ConnectFourGrid connectFourGrid) {
         int minimaxDepth = 10;
@@ -33,6 +49,15 @@ public class AttackStrategy implements ComputerStrategy {
         return bestMoves.get(r.nextInt(bestMoves.size()));
     }
 
+    /**
+     * Implements the minimax algorithm with alpha-beta pruning via recursion
+     *
+     * @param connectFourGrid The grid to evaluate
+     * @param depth The depth of the current move
+     * @param isComputerTurn True if it's the computer's turn to insert a token, False otherwise
+     * @return The evaluation based on the winner (or no winner) from the perspective of the computer
+     * @see ConnectFourGrid#getGridEvaluation(char)
+     */
     private int minimax(ConnectFourGrid connectFourGrid, int depth, int alpha, int beta, boolean isComputerTurn) {
         if(depth <= 0) {
             return 0;

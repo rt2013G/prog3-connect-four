@@ -5,7 +5,25 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The defense strategy simply tries to block the player checking the column with the highest number
+ * of player's tokens
+ *
+ * @author Raffaele Talente
+ */
 public class DefenseStrategy implements ComputerStrategy {
+    /**
+     * Returns a column using the following procedures: it first creates a HashMap that maps a String to the number
+     * that stores the count of player's tokens in the column.
+     * The String is created by concatenating the type of direction it's checking (h for horizontal, v for vertical,
+     * ad for ascending diagonal, dd for descending diagonal).
+     * It then gets the key with the highest value, if such value is 1 o 0, meaning the column has
+     * only 0 or 1 tokens, it returns a random column that contains the least amount of tokens, otherwise,
+     * it returns the key of that value mapped back into an Integer by removing the added prefix.
+     *
+     * @param connectFourGrid A ConnectFourGrid object to evaluate in order to get a column
+     * @return The column to insert the token into
+     */
     @Override
     public int computerMoveColumn(ConnectFourGrid connectFourGrid) {
         char symbolToCount = connectFourGrid.TOKEN_PLAYER_SYMBOL;

@@ -4,17 +4,25 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Encapsulates access to the database so that other classes can handle storage of users easily.
+ * Uses SQLite as it is a very small local database.
+ *
+ * @author Raffaele Talente
+ */
 public class Database {
     private Connection connection = null;
     private final String protocol = "jdbc:sqlite:";
     private final String databaseName = "app.db";
 
+    /**
+     * Creates the user table if it doesn't exist, catches any SQL exceptions directly in the method
+     */
     public void initTables() {
         try {
             connection = DriverManager.getConnection(protocol + databaseName);
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);
-
             statement.executeUpdate("create table if not exists users (name string, " +
                                                             "surname string, " +
                                                             "wins integer default 0," +
@@ -26,6 +34,11 @@ public class Database {
         }
     }
 
+    /**
+     * Closes a connection by handling the try/catch statement
+     *
+     * @param connection The connection to close
+     */
     private void closeConnection(Connection connection) {
         try {
             if(connection != null) {
@@ -36,6 +49,13 @@ public class Database {
         }
     }
 
+    /**
+     * @param name The name of the user
+     * @param surname The surname of the user
+     * @return The database user mapped from name and surname if it exists, otherwise an EmptyUser
+     * @see User
+     * @see EmptyUser
+     */
     public User getUserOrEmptyUser(String name, String surname) {
         try {
             connection = DriverManager.getConnection(protocol + databaseName);
@@ -57,6 +77,12 @@ public class Database {
         return new EmptyUser(name, surname);
     }
 
+    /**
+     * Insert the User object into the database
+     *
+     * @param user The user to insert
+     * @see User
+     */
     public void insertUserIntoDatabase(User user) {
         try {
             connection = DriverManager.getConnection(protocol + databaseName);
@@ -75,6 +101,12 @@ public class Database {
         }
     }
 
+    /**
+     * Updates a User object in the database
+     *
+     * @param user the user to update
+     * @see User
+     */
     public void updateUser(User user) {
         try {
             connection = DriverManager.getConnection(protocol + databaseName);
@@ -92,6 +124,12 @@ public class Database {
         }
     }
 
+    /**
+     * Queries the database for a list of users up to a certain number
+     *
+     * @param value The number of users to return
+     * @return A list of Users fetched from the database
+     */
     public List<User> getTopUsersUpToValue(int value) {
         ArrayList<User> users = new ArrayList<>();
         try {

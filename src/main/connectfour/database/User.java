@@ -1,5 +1,11 @@
 package connectfour.database;
 
+/**
+ * Represents users from the database as objects manageable in the program
+ *
+ * @author Raffaele Talente
+ * @see Database
+ */
 public class User {
     protected final String name;
     protected final String surname;
