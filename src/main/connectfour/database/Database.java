@@ -68,7 +68,6 @@ public class Database {
                         rs.getString("surname"),
                         rs.getInt("wins"));
             }
-            connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -93,7 +92,6 @@ public class Database {
             statement.setString(2, user.getSurname());
             statement.setInt(3, user.getNumberOfWins());
             statement.execute();
-            connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -116,7 +114,6 @@ public class Database {
             statement.setString(2, user.getName());
             statement.setString(3, user.getSurname());
             statement.execute();
-            connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -147,7 +144,6 @@ public class Database {
                     break;
                 }
             }
-            connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {

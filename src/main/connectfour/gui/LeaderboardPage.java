@@ -31,9 +31,6 @@ public class LeaderboardPage extends PageTemplate {
     public void createPage() {
         setContentPane(mainPanel);
         setTitle("Thanks for playing!");
-    }
-
-    public void fillPage() {
         pack();
     }
 

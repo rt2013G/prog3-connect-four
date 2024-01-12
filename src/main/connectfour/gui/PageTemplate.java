@@ -30,7 +30,8 @@ public abstract class PageTemplate extends JFrame {
     /**
      * Part of the template method that defines how each page should fill its contents
      */
-    protected abstract void fillPage();
+    protected void fillPage() {
+    }
 
     /**
      * Sets the look and feel of each page to be the same
