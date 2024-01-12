@@ -1,0 +1,23 @@
+%! Author = Raffaele
+%! Date = 12/01/2024
+
+\thispagestyle{headings}
+\newpage
+\section{Conclusioni}\label{sec:conclusioni}
+
+In questo progetto è stato sviluppato un programma in grado di simulare il gioco da tavolo \textit{Forza quattro}. \\
+L'utilizzo del Design Pattern \textbf{Strategy} ha permesso di disaccoppiare la logica centrale del funzionamento
+di una partita dalla modalità di gioco che definisce il comportamento del computer. \\
+Grazie a questo pattern in futuro sarà possibile aggiungere nuove modalità di gioco in maniera estremamente facile,
+semplicemente implementando l'interfaccia \textit{ComputerStrategy}, e senza dover modificare le modalità esistenti
+in alcun modo.
+\\
+L'utilizzo del Design Pattern \textbf{Template Method} ha permesso di definire un algoritmo per standaridzzare le pagine
+dell'interfaccia grafica, grazie a questo pattern il programma può facilmente supportare nuove pagine della GUI senza
+dover modificare le pagine esistenti, inoltre se si dovesse decidere di cambiare il look and feel, basterebbe modificare
+soltanto il metodo all'interno della classe \textit{PageTemplate} piuttosto che in ogni singola pagina.
+\\
+L'utilizzo del Design Pattern \textbf{Singleton} ha permesso di definire un'unica istanza delle classi GameHandler e
+Controller, fornendo un punto di accesso globale ad esse. \\
+Grazie a questo pattern diventa impossibile per altre classi istanziare inavvertitamente un secondo GameHandler o
+Controller, cosa che \\porterebbe soltanto ad errori. \\

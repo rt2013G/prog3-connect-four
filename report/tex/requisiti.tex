@@ -1,0 +1,49 @@
+%! Author = Raffaele
+%! Date = 11/01/2024
+
+\thispagestyle{headings}
+\section{Sintesi dei requisiti}\label{sec:}
+
+\subsection{Requisiti funzionali}\label{subsec:requisiti-funzionali}
+\begin{itemize}
+    \item Il programma deve poter simulare una partita tra l'utente e un avversario finto le cui mosse
+    sono effettuate dall'applicazione stessa sfruttando un particolare algoritmo selezionato opportunamente.
+    Per semplicità, ci si riferirà a tale avversario finto semplicemente come \("\)Computer\("\).
+    \item Le pedine sono rappresentate nella griglia da un colore, il rosso simboleggia una pedina controllata
+    dall'utente, il giallo simboleggia una pedina controllata dal computer.
+    \item L'utente deve poter inserire all'interno della griglia di gioco una propria pedina in una qualsiasi colonna
+    libera, il programma deve rispondere inserendo una pedina controllata dal computer.
+    \item Seguendo le regole del gioco classico, nel momento in cui quattro pedine dello stesso colore sono in fila
+    in una qualsiasi direzione, il gioco termina e il controllore di quelle pedine vince la partita. \\
+    Se la partita è stata vinta dall'utente, il risultato deve essere salvato.
+    \item L'utente deve essere in grado di autenticarsi all'interno \\dell'applicazione inserendo nome e cognome. \\
+    Dopo aver inserito tali dati, il programma deve registrarlo opportunamente, in modo che i
+    risultati delle partite vengano memorizzati.
+    \item L'utente deve poter scegliere una modalità di gioco, che simboleggia il modo in cui il computer inserisce
+    le proprie pedine.
+    Le modalità disponibili sono le seguenti:
+        \begin{itemize}
+            \item \textbf{Difesa:} Il computer controlla il numero massimo di pedine in fila del giocatore, e inserisce
+            una propria pedina per tentare di bloccare la sequenza.
+            \item \textbf{Attacco:} Il computer utilizza l'algoritmo \textbf{Minimax con Alpha-beta pruning}\cite{Wiki} per dare
+            una valutazione alle mosse attualmente disponibili - dove per mossa si intende l'inserimento di una propria
+            pedina all'interno di una colonna - e giocare la mossa con la valutazione più alta. \\
+            L'algoritmo in questione verrà discusso nel dettaglio in una sezione successiva.
+            \item \textbf{Neutrale:} Il computer effettua una mossa scegliendo in maniera casuale tra la modalità Difesa
+            e Attacco.
+        \end{itemize}
+    \item Il risultato di una partita deve essere memorizzato dal programma, deve essere inoltre possibile per l'utente
+    visualizzare una classifica degli utenti che hanno totalizzato i punteggi più altri, dove per punteggio si intende
+    il numero di vittorie.
+    \item Deve essere possibile per l'utente mettere in pausa una partita in un qualsiasi momento per riprenderla
+    successivamente.
+\end{itemize}
+
+\subsection{Requisiti non funzionali}\label{subsec:requisiti-non-funzionali}
+\begin{itemize}
+    \item L'applicazione deve essere sviluppata utilizzando il linguaggio \textbf{Java} e attenendosi ai principi
+    della programmazione \textbf{SOLID}.
+    \item L'applicazione deve prevedere un'interfaccia grafica per rendere agevole l'interazione con l'utente.
+    \item E' necessario utilizzare almeno due Design Pattern tra quelli studiati.
+    \item I dati devono essere memorizzati tramite file o database.
+\end{itemize}

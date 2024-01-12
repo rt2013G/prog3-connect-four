@@ -6,7 +6,6 @@ app.db
 last_game.txt
 notes.md
 *.out
-report/
 
 # Compiled class file
 *.class
